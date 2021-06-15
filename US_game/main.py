@@ -1,32 +1,32 @@
 from turtle import Turtle,Screen
 import pandas as pd
 
-
 cursor = Turtle()
 screen = Screen()
 screen.setup(width=700,height=500)
 screen.title("US states recognization ")
 screen.bgpic("blank_states_img.gif")
 
-
-# def get_mouse_on_click(x,y):
-#     print(x,y)
-
-# screen.onscreenclick(get_mouse_on_click)
-# screen.mainloop()
-
 states = pd.read_csv("50_states.csv")
-answer = screen.textinput(title="Guess the state" , prompt="what's the another state game ").capitalize()
+count = 0
 
-try:
-    ans = states[states.state == answer]
-    
-    cursor.write(f'{ans.state}',font=("Verdana",15, "normal"))
-    
-except:
-    print("something went wrong ")
-
-
+while count <= 50:
+    try:
+        answer = screen.textinput(title=f"{count}/50" , prompt="what's the another state game ").title()
+        preans = states[states.state == answer]
+        x = preans['x'].to_list()
+        y = preans['y'].to_list()
+        cursor.ht()
+        cursor.up()
+        cursor.goto(int(x[0]),int(y[0]))
+        cursor.down()
+        cursor.write(f'{answer}',font=("Verdana",15, "normal"))
+        count +=1
+        del states[states.state == answer]
+        
+    except:
+        print(f"remaning states are {states}")
+        break
 
 
 screen.exitonclick()
